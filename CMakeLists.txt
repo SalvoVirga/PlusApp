@@ -2,6 +2,9 @@ PROJECT(PlusApp)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.3.0)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # ------------------------------------------------------------------------
 # PlusLib
 # --------------------------------------------------------------------------
@@ -164,9 +167,11 @@ ENDIF()
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/Install)
 SET(INSTALL_DESTINATION_DIR "PlusApp_v${PLUSAPP_VERSION_MAJOR}.${PLUSAPP_VERSION_MINOR}.${PLUSAPP_VERSION_PATCH}")
 
-OPTION(PLUSAPP_BUILD_DiagnosticTools "Build the DiagnosticTools" ON)
-OPTION(PLUSAPP_BUILD_fCal "Build the fCal application (Qt)" ON)
-OPTION(PLUSAPP_TEST_GUI "Enable GUI tests" ON)
+OPTION(PLUSAPP_BUILD_DiagnosticTools "Build the DiagnosticTools" OFF)
+OPTION(PLUS_APP_BUILD_PointSetExtractor "Build the PointSetExtractor application" OFF)
+OPTION(PLUS_APP_BUILD_SpatialSensorFusion "Build the SpatialSensorFusion application" OFF)
+OPTION(PLUSAPP_BUILD_fCal "Build the fCal application (Qt)" OFF)
+OPTION(PLUSAPP_TEST_GUI "Enable GUI tests" OFF)
 
 # --------------------------------------------------------------------------
 # Command-line application documentation
@@ -220,8 +225,13 @@ SET(CMAKE_AUTORCC ON)
 # --------------------------------------------------------------------------
 # Build various utilities
 # --------------------------------------------------------------------------
-ADD_SUBDIRECTORY(PointSetExtractor)
-ADD_SUBDIRECTORY(SpatialSensorFusion)
+IF(PLUS_APP_BUILD_PointSetExtractor)
+  ADD_SUBDIRECTORY(PointSetExtractor)
+ENDIF()
+
+IF(PLUS_APP_BUILD_SpatialSensorFusion)
+  ADD_SUBDIRECTORY(SpatialSensorFusion)
+ENDIF()
 
 IF(PLUS_USE_OpenIGTLink)
   ADD_SUBDIRECTORY(PlusServerLauncher) #(Qt)
